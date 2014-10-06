@@ -1,0 +1,89 @@
+__author__ = 'pruyne'
+
+
+class Board:
+    def __init__(self):
+        self.columns = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
+        self.changing = True
+        self.valid_move = False
+
+    def __str__(self):
+        full_board = """+-------------+
+|%s|%s|%s|%s|%s|%s|%s|
++-------------+
+|%s|%s|%s|%s|%s|%s|%s|
++-------------+
+|%s|%s|%s|%s|%s|%s|%s|
++-------------+
+|%s|%s|%s|%s|%s|%s|%s|
++-------------+
+|%s|%s|%s|%s|%s|%s|%s|
++-------------+
+|%s|%s|%s|%s|%s|%s|%s|
++-------------+""" % (
+            self.columns[0][0], self.columns[1][0], self.columns[2][0], self.columns[3][0], self.columns[4][0],
+            self.columns[5][0], self.columns[6][0],
+            self.columns[0][1], self.columns[1][1], self.columns[2][1], self.columns[3][1], self.columns[4][1],
+            self.columns[5][1], self.columns[6][1],
+            self.columns[0][2], self.columns[1][2], self.columns[2][2], self.columns[3][2], self.columns[4][2],
+            self.columns[5][2], self.columns[6][2],
+            self.columns[0][3], self.columns[1][3], self.columns[2][3], self.columns[3][3], self.columns[4][3],
+            self.columns[5][3], self.columns[6][3],
+            self.columns[0][4], self.columns[1][4], self.columns[2][4], self.columns[3][4], self.columns[4][4],
+            self.columns[5][4], self.columns[6][4],
+            self.columns[0][5], self.columns[1][5], self.columns[2][5], self.columns[3][5], self.columns[4][5],
+            self.columns[5][5], self.columns[6][5])
+        return full_board
+
+    def add_piece(self, column, player):
+        self.valid_move = False
+        column = column - 1
+        row = 0
+        for piece in self.columns[column]:
+            if piece == 0:
+                row = row + 1
+            else:
+                break
+        row = row - 1
+        if not row == -1:
+            self.valid_move = True
+            self.columns[column][row] = player
+
+
+
+
+my_board = Board()
+print my_board
+my_board.add_piece(3,"B")
+print
+print
+print my_board
+my_board.add_piece(3,"R")
+print
+print
+print my_board
+my_board.add_piece(3,"B")
+print
+print
+print my_board
+my_board.add_piece(3,"R")
+print
+print
+my_board.add_piece(3,"B")
+print
+print my_board.valid_move
+print my_board
+my_board.add_piece(3,"R")
+print
+print my_board.valid_move
+print my_board
+my_board.add_piece(3,"B")
+print
+print my_board.valid_move
+print my_board
+my_board.add_piece(3,"R")
+print
+print my_board.valid_move
+print my_board
