@@ -87,3 +87,6 @@ my_board.add_piece(3,"R")
 print
 print my_board.valid_move
 print my_board
+
+
+print "Yeah"
