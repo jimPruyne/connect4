@@ -1,5 +1,5 @@
 __author__ = 'pruyne'
-
+import random
 
 class Board:
     def __init__(self):
@@ -39,7 +39,6 @@ class Board:
 
     def add_piece(self, column, player):
         self.valid_move = False
-        column = column - 1
         row = 0
         for piece in self.columns[column]:
             if piece == 0:
@@ -51,42 +50,61 @@ class Board:
             self.valid_move = True
             self.columns[column][row] = player
 
+    def check_win(self):
+        win = False
+        #horizontal win
+        for column in range(0,4):
+            for row in range(0,6):
+                if self.columns[column][row] != 0:
+                    if self.columns[column][row] == self.columns[column + 1][row] == self.columns[column + 2][row] == self.columns[column + 3][row]:
+                        win = True
+                        return win
+        #vertical win
+        for column in range(0,7):
+            for row in range(0,3):
+                if self.columns[column][row]!= 0:
+                    if self.columns[column][row] == self.columns[column][row + 1] == self.columns[column][row + 2]  == self.columns[column][row + 3]:
+                        win = True
+                        return win
+        #diagonal down left win
+        for column in range(3,7):
+            for row in range(0,3):
+                if self.columns[column][row] != 0:
+                    if self.columns[column][row] == self.columns[column - 1][row + 1] == self.columns[column - 2][row + 2] == self.columns[column - 3][row + 3]:
+                        win = True
+                        return win
+        #diagonal down right win
+        for column in range(0,4):
+            for row in range(0,3):
+                if self.columns[column][row] != 0:
+                    if self.columns[column][row] == self.columns[column + 1][row + 1] == self.columns[column + 2][row + 2] == self.columns[column + 3][row + 3]:
+                        win = True
+                        return win
+        win = False
+        return win
+
+
+
+
 
 
 
 my_board = Board()
+win = False
+while not win:
+    print my_board
+    play_column = input("Red piece: ")
+    my_board.add_piece(play_column, 'R')
+    if my_board.check_win()== True:
+        win = True
+        winner = "red"
+        break
+    print my_board
+    play_column = input("Black piece:")
+    my_board.add_piece(play_column, 'B')
+    if my_board.check_win()== True:
+        win = True
+        winner = "black"
+        break
 print my_board
-my_board.add_piece(3,"B")
-print
-print
-print my_board
-my_board.add_piece(3,"R")
-print
-print
-print my_board
-my_board.add_piece(3,"B")
-print
-print
-print my_board
-my_board.add_piece(3,"R")
-print
-print
-my_board.add_piece(3,"B")
-print
-print my_board.valid_move
-print my_board
-my_board.add_piece(3,"R")
-print
-print my_board.valid_move
-print my_board
-my_board.add_piece(3,"B")
-print
-print my_board.valid_move
-print my_board
-my_board.add_piece(3,"R")
-print
-print my_board.valid_move
-print my_board
-
-
-print "Yeah"
+print play_column
