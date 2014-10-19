@@ -225,10 +225,34 @@ class AI:
         print "%s choosing column %s with value %s" % (self.color, chosen_column, best_score)
         return chosen_column
 
+    def score_board(self, board):
+        board_score = 0
+        opp_color = 0
+        if self.color == "R":
+            opp_color = "B"
+        else:
+            opp_color = "R"
+        self_threes = board.check_three(self.color)
+        self_twos = board.check_two(self.color)
+        opp_threes = board.check_three(opp_color)
+        opp_twos = board.check_two(opp_color)
+        board_score = board_score + self_threes[0] * self.strategy[0][0]
+        board_score = board_score + self_threes[1] * self.strategy[0][1]
+        board_score = board_score + self_threes[2] * self.strategy[0][2]
+        board_score = board_score + self_twos[0] * self.strategy[1][0]
+        board_score = board_score + self_twos[1] * self.strategy[1][1]
+        board_score = board_score + self_twos[2] * self.strategy[1][2]
+        board_score = board_score + opp_threes[0] * self.strategy[2][0]
+        board_score = board_score + opp_threes[1] * self.strategy[2][1]
+        board_score = board_score + opp_threes[2] * self.strategy[2][2]
+        board_score = board_score + opp_twos[0] * self.strategy[3][0]
+        board_score = board_score + opp_twos[1] * self.strategy[3][1]
+        board_score = board_score + opp_twos[2] * self.strategy[3][2]
+        return board_score
 
     def minimax(self, board, depth, maximizing_player):
         if depth == 0:
-            pass  # return node heuristic
+            return self.score_board(board)  # return node heuristic
         if board.check_win() == True:
             if maximizing_player == True:
                 return sys.maxint
@@ -261,33 +285,76 @@ class AI:
             return best_value
 
 
+# main game
+
+offense = [[1, 3, 4], [0, 1, 2], [1, 0, -1], [0, 0, 0]]
+defense = [[0, 1, 3], [0, 0, 1], [3, -1, -4], [1, 0, -2]]
 red_data = raw_input("Enter red AI:")
 black_data = raw_input("Enter black AI:")
-game_number = raw_input("Number of games:")
+total_games = raw_input("Number of games:")
 red_parts = red_data.split("_")
 red_parts[1] = red_parts[1].replace("lookahead", "")
+if red_parts[0] == "offense":
+    red_parts[0] = offense
+else:
+    red_parts[0] = defense
 red_ai = AI(red_parts[1], red_parts[0], "R")
 black_parts = black_data.split("_")
 black_parts[1] = black_parts[1].replace("lookahead", "")
+if black_parts[0] == "offense":
+    black_parts[0] = offense
+else:
+    black_parts[0] = defense
 black_ai = AI(black_parts[1], black_parts[0], "B")
 my_board = Board()
 win = False
-while not win:
-    print "Real board"
+red_wins = 0
+black_wins = 0
+game_number = 1
+for i in range(1, int(total_games) + 1):
+    win = False
+    print
+    print
+    if game_number % 2 == 0:
+        while not win:
+            print my_board
+            play_column = red_ai.choose_move(my_board)
+            my_board.add_piece(play_column, 'R')
+            print play_column
+            if my_board.check_win() == True:
+                win = True
+                red_wins = red_wins + 1
+                winner = "red"
+            print my_board
+            play_column = black_ai.choose_move(my_board)
+            my_board.add_piece(play_column, 'B')
+            print play_column
+            if my_board.check_win() == True:
+                win = True
+                black_wins = black_wins + 1
+                winner = "black"
+                break
+    else:
+        while not win:
+            print my_board
+            play_column = black_ai.choose_move(my_board)
+            my_board.add_piece(play_column, 'B')
+            print play_column
+            if my_board.check_win() == True:
+                win = True
+                black_wins = black_wins + 1
+                winner = "black"
+                break
+            print my_board
+            play_column = red_ai.choose_move(my_board)
+            my_board.add_piece(play_column, 'R')
+            print play_column
+            if my_board.check_win() == True:
+                win = True
+                red_wins = red_wins + 1
+                winner = "red"
+
     print my_board
-    play_column = red_ai.choose_move(my_board)
-    my_board.add_piece(play_column, 'R')
-    if my_board.check_win() == True:
-        win = True
-        winner = "red"
-        break
-    print "Real board"
-    print my_board
-    play_column = black_ai.choose_move(my_board)
-    my_board.add_piece(play_column, 'B')
-    if my_board.check_win() == True:
-        win = True
-        winner = "black"
-        break
-print my_board
-print winner
+    print winner
+print "Red won %s times" %(red_wins)
+print "Black won %s times" %(black_wins)
