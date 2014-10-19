@@ -222,6 +222,8 @@ class AI:
             board.remove_piece(move_column)
         if len(best_column) > 0:
             chosen_column = random.choice(best_column)
+        else:
+            chosen_column = -1
         print "%s choosing column %s with value %s" % (self.color, chosen_column, best_score)
         return chosen_column
 
@@ -306,12 +308,13 @@ if black_parts[0] == "offense":
 else:
     black_parts[0] = defense
 black_ai = AI(black_parts[1], black_parts[0], "B")
-my_board = Board()
+
 win = False
 red_wins = 0
 black_wins = 0
 game_number = 1
 for i in range(1, int(total_games) + 1):
+    my_board = Board()
     win = False
     print
     print
@@ -319,6 +322,10 @@ for i in range(1, int(total_games) + 1):
         while not win:
             print my_board
             play_column = red_ai.choose_move(my_board)
+            if play_column == -1:
+                win = True
+                winner = "Tie"
+                break
             my_board.add_piece(play_column, 'R')
             print play_column
             if my_board.check_win() == True:
@@ -338,6 +345,10 @@ for i in range(1, int(total_games) + 1):
         while not win:
             print my_board
             play_column = black_ai.choose_move(my_board)
+            if play_column == -1:
+                win = True
+                winner = "Tie"
+                break
             my_board.add_piece(play_column, 'B')
             print play_column
             if my_board.check_win() == True:
@@ -356,5 +367,5 @@ for i in range(1, int(total_games) + 1):
 
     print my_board
     print winner
-print "Red won %s times" %(red_wins)
-print "Black won %s times" %(black_wins)
+print "Red won %s times" % (red_wins)
+print "Black won %s times" % (black_wins)
