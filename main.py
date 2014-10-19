@@ -1,5 +1,7 @@
 __author__ = 'pruyne'
+import sys
 import random
+
 
 class Board:
     def __init__(self):
@@ -37,6 +39,15 @@ class Board:
             self.columns[5][5], self.columns[6][5])
         return full_board
 
+    def possible_moves(self):
+        possible_moves = []
+        item_number = 0
+        for item in self.columns:
+            if item[0] == 0:
+                possible_moves.append(item_number)
+            item_number = item_number + 1
+        return possible_moves
+
     def add_piece(self, column, player):
         self.valid_move = False
         row = 0
@@ -50,61 +61,233 @@ class Board:
             self.valid_move = True
             self.columns[column][row] = player
 
+    def remove_piece(self, column):
+        row = 0
+        for piece in self.columns[column]:
+            if piece == 0:
+                row = row + 1
+            else:
+                break
+        if row < 6:
+            self.columns[column][row] = 0
+
+
     def check_win(self):
         win = False
-        #horizontal win
-        for column in range(0,4):
-            for row in range(0,6):
+        # horizontal win
+        for column in range(0, 4):
+            for row in range(0, 6):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column + 1][row] == self.columns[column + 2][row] == self.columns[column + 3][row]:
+                    if self.columns[column][row] == self.columns[column + 1][row] == self.columns[column + 2][row] == \
+                            self.columns[column + 3][row]:
                         win = True
                         return win
-        #vertical win
-        for column in range(0,7):
-            for row in range(0,3):
-                if self.columns[column][row]!= 0:
-                    if self.columns[column][row] == self.columns[column][row + 1] == self.columns[column][row + 2]  == self.columns[column][row + 3]:
+        # vertical win
+        for column in range(0, 7):
+            for row in range(0, 3):
+                if self.columns[column][row] != 0:
+                    if self.columns[column][row] == self.columns[column][row + 1] == self.columns[column][row + 2] == \
+                            self.columns[column][row + 3]:
                         win = True
                         return win
-        #diagonal down left win
-        for column in range(3,7):
-            for row in range(0,3):
+        # diagonal down left win
+        for column in range(3, 7):
+            for row in range(0, 3):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column - 1][row + 1] == self.columns[column - 2][row + 2] == self.columns[column - 3][row + 3]:
+                    if self.columns[column][row] == self.columns[column - 1][row + 1] == self.columns[column - 2][
+                                row + 2] == self.columns[column - 3][row + 3]:
                         win = True
                         return win
-        #diagonal down right win
-        for column in range(0,4):
-            for row in range(0,3):
+        # diagonal down right win
+        for column in range(0, 4):
+            for row in range(0, 3):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column + 1][row + 1] == self.columns[column + 2][row + 2] == self.columns[column + 3][row + 3]:
+                    if self.columns[column][row] == self.columns[column + 1][row + 1] == self.columns[column + 2][
+                                row + 2] == self.columns[column + 3][row + 3]:
                         win = True
                         return win
         win = False
         return win
 
+    def check_three(self, color):
+        threes = [0, 0, 0]  # closed, 1 end open, 2 ends open
+        for column in range(0, 5):
+            for row in range(0, 6):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column + 1][row] == self.columns[column + 2][row]:
+                        ends_open = 0
+                        if column + 3 < 7 and self.columns[column + 3][row] == 0:
+                            ends_open = ends_open + 1
+                        if column - 1 > -1 and self.columns[column - 1][row] == 0:
+                            ends_open = ends_open + 1
+                        threes[ends_open] = threes[ends_open] + 1
+        for column in range(0, 7):
+            for row in range(0, 4):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column][row + 1] == self.columns[column][row + 2]:
+                        ends_open = 0
+                        if row + 3 < 6 and self.columns[column][row + 3] == 0:
+                            ends_open = ends_open + 1
+                        if row - 1 > -1 and self.columns[column][row - 1] == 0:
+                            ends_open = ends_open + 1
+                        threes[ends_open] = threes[ends_open] + 1
+        for column in range(2, 7):
+            for row in range(0, 4):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column - 1][row + 1] == self.columns[column - 2][
+                                row + 2]:
+                        ends_open = 0
+                        if column - 3 > -1 and row + 3 < 6 and self.columns[column - 3][row + 3] == 0:
+                            ends_open = ends_open + 1
+                        if column + 1 < 7 and row - 1 > -1 and self.columns[column + 1][row - 1] == 0:
+                            ends_open = ends_open + 1
+                        threes[ends_open] = threes[ends_open] + 1
+        for column in range(0, 5):
+            for row in range(0, 4):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column + 1][row + 1] == self.columns[column + 2][
+                                row + 2]:
+                        ends_open = 0
+                        if column + 3 < 7 and row + 3 < 6 and self.columns[column + 3][row + 3] == 0:
+                            ends_open = ends_open + 1
+                        if column - 1 > -1 and row - 1 > -1 and self.columns[column - 1][row - 1] == 0:
+                            ends_open = ends_open + 1
+                        threes[ends_open] = threes[ends_open] + 1
+        return threes
+
+    def check_two(self, color):
+        twos = [0, 0, 0]  # closed, 1 end open, 2 ends open
+        for column in range(0, 6):
+            for row in range(0, 6):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column + 1][row]:
+                        ends_open = 0
+                        if column + 2 < 7 and self.columns[column + 2][row] == 0:
+                            ends_open = ends_open + 1
+                        if column - 1 > -1 and self.columns[column - 1][row] == 0:
+                            ends_open = ends_open + 1
+                        twos[ends_open] = twos[ends_open] + 1
+        for column in range(0, 7):
+            for row in range(0, 5):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column][row + 1]:
+                        ends_open = 0
+                        if row + 2 < 6 and self.columns[column][row + 2] == 0:
+                            ends_open = ends_open + 1
+                        if row - 1 > -1 and self.columns[column][row - 1] == 0:
+                            ends_open = ends_open + 1
+                        twos[ends_open] = twos[ends_open] + 1
+        for column in range(1, 7):
+            for row in range(0, 5):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column - 1][row + 1]:
+                        ends_open = 0
+                        if column - 2 > -1 and row + 2 < 6 and self.columns[column - 2][row + 2] == 0:
+                            ends_open = ends_open + 1
+                        if column + 1 < 7 and row - 1 > -1 and self.columns[column + 1][row - 1] == 0:
+                            ends_open = ends_open + 1
+                        twos[ends_open] = twos[ends_open] + 1
+        for column in range(0, 6):
+            for row in range(0, 5):
+                if self.columns[column][row] == color:
+                    if self.columns[column][row] == self.columns[column + 1][row + 1]:
+                        ends_open = 0
+                        if column + 2 < 7 and row + 2 < 6 and self.columns[column + 2][row + 2] == 0:
+                            ends_open = ends_open + 1
+                        if column - 1 > -1 and row - 1 > -1 and self.columns[column - 1][row - 1] == 0:
+                            ends_open = ends_open + 1
+                        twos[ends_open] = twos[ends_open] + 1
+        return twos
 
 
+class AI:
+    def __init__(self, lookahead, strategy, color):
+        self.strategy = strategy
+        self.lookahead = int(lookahead)
+        self.color = color
+
+    def choose_move(self, board):
+        possible_moves = board.possible_moves()
+        best_column = []
+        best_score = -sys.maxint - 1  # equivalent of negative infinity
+        for move_column in possible_moves:
+            board.add_piece(move_column, self.color)
+            current_column = self.minimax(board, self.lookahead - 1, True)
+            if current_column > best_score:
+                best_score = current_column
+                best_column = []
+                best_column.append(move_column)
+            elif current_column == best_score:
+                best_column.append(move_column)
+            board.remove_piece(move_column)
+        if len(best_column) > 0:
+            chosen_column = random.choice(best_column)
+        print "%s choosing column %s with value %s" % (self.color, chosen_column, best_score)
+        return chosen_column
 
 
+    def minimax(self, board, depth, maximizing_player):
+        if depth == 0:
+            pass  # return node heuristic
+        if board.check_win() == True:
+            if maximizing_player == True:
+                return sys.maxint
+            else:
+                return -sys.maxint - 1
+        maximizing_player = not maximizing_player
+        moves_to_check = board.possible_moves()
+        if maximizing_player:
+            best_value = -sys.maxint - 1
+            for move in moves_to_check:
+                board.add_piece(move, self.color)
+                value = self.minimax(board, depth - 1, True)
+                if value > best_value:
+                    best_value = value
+                board.remove_piece(move)
+            return best_value
+        else:
+            best_value = sys.maxint
+            opp_color = 0
+            if self.color == "R":
+                opp_color = "B"
+            else:
+                opp_color = "R"
+            for move in moves_to_check:
+                board.add_piece(move, opp_color)
+                value = self.minimax(board, depth - 1, False)
+                if value < best_value:
+                    best_value = value
+                board.remove_piece(move)
+            return best_value
 
 
+red_data = raw_input("Enter red AI:")
+black_data = raw_input("Enter black AI:")
+game_number = raw_input("Number of games:")
+red_parts = red_data.split("_")
+red_parts[1] = red_parts[1].replace("lookahead", "")
+red_ai = AI(red_parts[1], red_parts[0], "R")
+black_parts = black_data.split("_")
+black_parts[1] = black_parts[1].replace("lookahead", "")
+black_ai = AI(black_parts[1], black_parts[0], "B")
 my_board = Board()
 win = False
 while not win:
+    print "Real board"
     print my_board
-    play_column = input("Red piece: ")
+    play_column = red_ai.choose_move(my_board)
     my_board.add_piece(play_column, 'R')
-    if my_board.check_win()== True:
+    if my_board.check_win() == True:
         win = True
         winner = "red"
         break
+    print "Real board"
     print my_board
-    play_column = input("Black piece:")
+    play_column = black_ai.choose_move(my_board)
     my_board.add_piece(play_column, 'B')
-    if my_board.check_win()== True:
+    if my_board.check_win() == True:
         win = True
         winner = "black"
         break
 print my_board
-print play_column
+print winner
