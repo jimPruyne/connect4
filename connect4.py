@@ -335,7 +335,8 @@ black_ai = AI(black_parts[1], black_parts[0], "B")
 win = False
 red_wins = 0
 black_wins = 0
-ties = 0
+tie_redfirst = 0
+tie_blackfirst = 0
 game_number = 1
 for i in range(1, int(total_games) + 1):
     my_board = Board()
@@ -349,7 +350,7 @@ for i in range(1, int(total_games) + 1):
             if play_column == -1:
                 win = True
                 winner = "Tie"
-                ties = ties + 1
+                tie_redfirst = tie_redfirst + 1
                 break
             my_board.add_piece(play_column, 'R')
             print play_column
@@ -373,7 +374,7 @@ for i in range(1, int(total_games) + 1):
             if play_column == -1:
                 win = True
                 winner = "Tie"
-                ties = ties + 1
+                tie_blackfirst = tie_blackfirst + 1
                 break
             my_board.add_piece(play_column, 'B')
             print play_column
@@ -395,4 +396,5 @@ for i in range(1, int(total_games) + 1):
     print winner
 print "Red won %s times" % (red_wins)
 print "Black won %s times" % (black_wins)
-print "There were %s ties" % (ties)
+print "There were %s ties with red going first" % (tie_redfirst)
+print "There were %s ties with black going first" % (tie_blackfirst)
