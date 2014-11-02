@@ -5,7 +5,8 @@ import random
 
 class Board:
     def __init__(self):
-        self.columns = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+        self.columns = [[0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0],
+                        [0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0],
                         [0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0]]
         self.changing = True
@@ -25,17 +26,23 @@ class Board:
 +-------------+
 |%s|%s|%s|%s|%s|%s|%s|
 +-------------+""" % (
-            self.columns[0][0], self.columns[1][0], self.columns[2][0], self.columns[3][0], self.columns[4][0],
+            self.columns[0][0], self.columns[1][0], self.columns[2][0], self.columns[3][0],
+            self.columns[4][0],
             self.columns[5][0], self.columns[6][0],
-            self.columns[0][1], self.columns[1][1], self.columns[2][1], self.columns[3][1], self.columns[4][1],
+            self.columns[0][1], self.columns[1][1], self.columns[2][1], self.columns[3][1],
+            self.columns[4][1],
             self.columns[5][1], self.columns[6][1],
-            self.columns[0][2], self.columns[1][2], self.columns[2][2], self.columns[3][2], self.columns[4][2],
+            self.columns[0][2], self.columns[1][2], self.columns[2][2], self.columns[3][2],
+            self.columns[4][2],
             self.columns[5][2], self.columns[6][2],
-            self.columns[0][3], self.columns[1][3], self.columns[2][3], self.columns[3][3], self.columns[4][3],
+            self.columns[0][3], self.columns[1][3], self.columns[2][3], self.columns[3][3],
+            self.columns[4][3],
             self.columns[5][3], self.columns[6][3],
-            self.columns[0][4], self.columns[1][4], self.columns[2][4], self.columns[3][4], self.columns[4][4],
+            self.columns[0][4], self.columns[1][4], self.columns[2][4], self.columns[3][4],
+            self.columns[4][4],
             self.columns[5][4], self.columns[6][4],
-            self.columns[0][5], self.columns[1][5], self.columns[2][5], self.columns[3][5], self.columns[4][5],
+            self.columns[0][5], self.columns[1][5], self.columns[2][5], self.columns[3][5],
+            self.columns[4][5],
             self.columns[5][5], self.columns[6][5])
         return full_board
 
@@ -78,7 +85,8 @@ class Board:
         for column in range(0, 4):
             for row in range(0, 6):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column + 1][row] == self.columns[column + 2][row] == \
+                    if self.columns[column][row] == self.columns[column + 1][row] == \
+                            self.columns[column + 2][row] == \
                             self.columns[column + 3][row]:
                         win = True
                         return win
@@ -86,7 +94,8 @@ class Board:
         for column in range(0, 7):
             for row in range(0, 3):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column][row + 1] == self.columns[column][row + 2] == \
+                    if self.columns[column][row] == self.columns[column][row + 1] == \
+                            self.columns[column][row + 2] == \
                             self.columns[column][row + 3]:
                         win = True
                         return win
@@ -94,16 +103,18 @@ class Board:
         for column in range(3, 7):
             for row in range(0, 3):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column - 1][row + 1] == self.columns[column - 2][
-                                row + 2] == self.columns[column - 3][row + 3]:
+                    if self.columns[column][row] == self.columns[column - 1][row + 1] == \
+                            self.columns[column - 2][
+                                        row + 2] == self.columns[column - 3][row + 3]:
                         win = True
                         return win
         # diagonal down right win
         for column in range(0, 4):
             for row in range(0, 3):
                 if self.columns[column][row] != 0:
-                    if self.columns[column][row] == self.columns[column + 1][row + 1] == self.columns[column + 2][
-                                row + 2] == self.columns[column + 3][row + 3]:
+                    if self.columns[column][row] == self.columns[column + 1][row + 1] == \
+                            self.columns[column + 2][
+                                        row + 2] == self.columns[column + 3][row + 3]:
                         win = True
                         return win
         win = False
@@ -114,7 +125,8 @@ class Board:
         for column in range(0, 5):
             for row in range(0, 6):
                 if self.columns[column][row] == color:
-                    if self.columns[column][row] == self.columns[column + 1][row] == self.columns[column + 2][row]:
+                    if self.columns[column][row] == self.columns[column + 1][row] == \
+                            self.columns[column + 2][row]:
                         ends_open = 0
                         if column + 3 < 7 and self.columns[column + 3][row] == 0:
                             ends_open = ends_open + 1
@@ -124,7 +136,8 @@ class Board:
         for column in range(0, 7):
             for row in range(0, 4):
                 if self.columns[column][row] == color:
-                    if self.columns[column][row] == self.columns[column][row + 1] == self.columns[column][row + 2]:
+                    if self.columns[column][row] == self.columns[column][row + 1] == \
+                            self.columns[column][row + 2]:
                         ends_open = 0
                         if row + 3 < 6 and self.columns[column][row + 3] == 0:
                             ends_open = ends_open + 1
@@ -134,23 +147,29 @@ class Board:
         for column in range(2, 7):
             for row in range(0, 4):
                 if self.columns[column][row] == color:
-                    if self.columns[column][row] == self.columns[column - 1][row + 1] == self.columns[column - 2][
-                                row + 2]:
+                    if self.columns[column][row] == self.columns[column - 1][row + 1] == \
+                            self.columns[column - 2][
+                                        row + 2]:
                         ends_open = 0
-                        if column - 3 > -1 and row + 3 < 6 and self.columns[column - 3][row + 3] == 0:
+                        if column - 3 > -1 and row + 3 < 6 and self.columns[column - 3][
+                                    row + 3] == 0:
                             ends_open = ends_open + 1
-                        if column + 1 < 7 and row - 1 > -1 and self.columns[column + 1][row - 1] == 0:
+                        if column + 1 < 7 and row - 1 > -1 and self.columns[column + 1][
+                                    row - 1] == 0:
                             ends_open = ends_open + 1
                         threes[ends_open] = threes[ends_open] + 1
         for column in range(0, 5):
             for row in range(0, 4):
                 if self.columns[column][row] == color:
-                    if self.columns[column][row] == self.columns[column + 1][row + 1] == self.columns[column + 2][
-                                row + 2]:
+                    if self.columns[column][row] == self.columns[column + 1][row + 1] == \
+                            self.columns[column + 2][
+                                        row + 2]:
                         ends_open = 0
-                        if column + 3 < 7 and row + 3 < 6 and self.columns[column + 3][row + 3] == 0:
+                        if column + 3 < 7 and row + 3 < 6 and self.columns[column + 3][
+                                    row + 3] == 0:
                             ends_open = ends_open + 1
-                        if column - 1 > -1 and row - 1 > -1 and self.columns[column - 1][row - 1] == 0:
+                        if column - 1 > -1 and row - 1 > -1 and self.columns[column - 1][
+                                    row - 1] == 0:
                             ends_open = ends_open + 1
                         threes[ends_open] = threes[ends_open] + 1
         return threes
@@ -182,9 +201,11 @@ class Board:
                 if self.columns[column][row] == color:
                     if self.columns[column][row] == self.columns[column - 1][row + 1]:
                         ends_open = 0
-                        if column - 2 > -1 and row + 2 < 6 and self.columns[column - 2][row + 2] == 0:
+                        if column - 2 > -1 and row + 2 < 6 and self.columns[column - 2][
+                                    row + 2] == 0:
                             ends_open = ends_open + 1
-                        if column + 1 < 7 and row - 1 > -1 and self.columns[column + 1][row - 1] == 0:
+                        if column + 1 < 7 and row - 1 > -1 and self.columns[column + 1][
+                                    row - 1] == 0:
                             ends_open = ends_open + 1
                         twos[ends_open] = twos[ends_open] + 1
         for column in range(0, 6):
@@ -192,9 +213,11 @@ class Board:
                 if self.columns[column][row] == color:
                     if self.columns[column][row] == self.columns[column + 1][row + 1]:
                         ends_open = 0
-                        if column + 2 < 7 and row + 2 < 6 and self.columns[column + 2][row + 2] == 0:
+                        if column + 2 < 7 and row + 2 < 6 and self.columns[column + 2][
+                                    row + 2] == 0:
                             ends_open = ends_open + 1
-                        if column - 1 > -1 and row - 1 > -1 and self.columns[column - 1][row - 1] == 0:
+                        if column - 1 > -1 and row - 1 > -1 and self.columns[column - 1][
+                                    row - 1] == 0:
                             ends_open = ends_open + 1
                         twos[ends_open] = twos[ends_open] + 1
         return twos
@@ -312,6 +335,7 @@ black_ai = AI(black_parts[1], black_parts[0], "B")
 win = False
 red_wins = 0
 black_wins = 0
+ties = 0
 game_number = 1
 for i in range(1, int(total_games) + 1):
     my_board = Board()
@@ -325,6 +349,7 @@ for i in range(1, int(total_games) + 1):
             if play_column == -1:
                 win = True
                 winner = "Tie"
+                ties = ties + 1
                 break
             my_board.add_piece(play_column, 'R')
             print play_column
@@ -348,6 +373,7 @@ for i in range(1, int(total_games) + 1):
             if play_column == -1:
                 win = True
                 winner = "Tie"
+                ties = ties + 1
                 break
             my_board.add_piece(play_column, 'B')
             print play_column
@@ -369,3 +395,4 @@ for i in range(1, int(total_games) + 1):
     print winner
 print "Red won %s times" % (red_wins)
 print "Black won %s times" % (black_wins)
+print "There were %s ties" % (ties)
