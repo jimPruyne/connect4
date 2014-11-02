@@ -316,7 +316,8 @@ offense = [[1, 3, 4], [0, 1, 2], [1, 0, -1], [0, 0, 0]]
 defense = [[0, 1, 3], [0, 0, 1], [3, -1, -4], [1, 0, -2]]
 red_data = raw_input("Enter red AI:")
 black_data = raw_input("Enter black AI:")
-total_games = raw_input("Number of games:")
+red_games = raw_input("Times red goes first:")
+black_games = raw_input("Times black goes first:")
 red_parts = red_data.split("_")
 red_parts[1] = red_parts[1].replace("lookahead", "")
 if red_parts[0] == "offense":
@@ -338,37 +339,43 @@ black_wins = 0
 tie_redfirst = 0
 tie_blackfirst = 0
 game_number = 1
-for i in range(1, int(total_games) + 1):
+for i in range(1, int(red_games) + 1):
     my_board = Board()
     win = False
     print
     print
-    if game_number % 2 == 0:
-        while not win:
-            print my_board
-            play_column = red_ai.choose_move(my_board)
-            if play_column == -1:
-                win = True
-                winner = "Tie"
-                tie_redfirst = tie_redfirst + 1
-                break
-            my_board.add_piece(play_column, 'R')
-            print play_column
-            if my_board.check_win() == True:
-                win = True
-                red_wins = red_wins + 1
-                winner = "red"
-            print my_board
-            play_column = black_ai.choose_move(my_board)
-            my_board.add_piece(play_column, 'B')
-            print play_column
-            if my_board.check_win() == True:
-                win = True
-                black_wins = black_wins + 1
-                winner = "black"
-                break
-    else:
-        while not win:
+    while not win:
+        print my_board
+        play_column = red_ai.choose_move(my_board)
+        if play_column == -1:
+            win = True
+            winner = "Tie"
+            tie_redfirst = tie_redfirst + 1
+            break
+        my_board.add_piece(play_column, 'R')
+        print play_column
+        if my_board.check_win() == True:
+            win = True
+            red_wins = red_wins + 1
+            winner = "red"
+            break
+        print my_board
+        play_column = black_ai.choose_move(my_board)
+        my_board.add_piece(play_column, 'B')
+        print play_column
+        if my_board.check_win() == True:
+            win = True
+            black_wins = black_wins + 1
+            winner = "black"
+            break
+    print my_board
+    print winner
+for j in range(1, int(black_games) + 1):
+    my_board = Board()
+    win = False
+    print
+    print
+    while not win:
             print my_board
             play_column = black_ai.choose_move(my_board)
             if play_column == -1:
@@ -391,7 +398,7 @@ for i in range(1, int(total_games) + 1):
                 win = True
                 red_wins = red_wins + 1
                 winner = "red"
-
+                break
     print my_board
     print winner
 print "Red won %s times" % (red_wins)
