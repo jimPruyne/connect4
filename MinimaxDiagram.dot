@@ -1,0 +1,47 @@
+digraph minimax
+{
+    node [fontsize=18,font=consolas];
+    Start [label="Current Board"];
+    A [label="11", color=green];
+    B [label="6"];
+    C [label="9"];
+    D [label="4"];
+    E [label="8"];
+    F [label="2"];
+    G [label="10"];
+    Start -> A [color=green, headlabel="Maximizing player", labeldistance=10.5, labelangle=160];
+    Start -> B;
+    Start -> C;
+    Start -> D;
+    Start -> E;
+    Start -> F;
+    Start -> G;
+    A1 [label="14"];
+    A2 [label="15"];
+    A3 [label="19"];
+    A4 [label="16"];
+    A5 [label="12"];
+    A6 [label="13"];
+    A7 [label="11", color=green];
+    A -> A1 [headlabel="Minimizing player", labeldistance=10.5, labelangle=160];
+    A -> A2;
+    A -> A3;
+    A -> A4;
+    A -> A5;
+    A -> A6;
+    A -> A7 [color=green];
+    H1 [label="6"];
+    H2 [label="5"];
+    H3 [label="11", color=green];
+    H4 [label="7"];
+    H5 [label="4"];
+    H6 [label="2"];
+    H7 [label="9"];
+    A7 -> H1 [headlabel="Maximizing player", labeldistance=10.5, labelangle=160];
+    A7 -> H2;
+    A7 -> H3 [color=green];
+    A7 -> H4;
+    A7 -> H5;
+    A7 -> H6;
+    A7 -> H7;
+}
