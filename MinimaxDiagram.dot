@@ -1,5 +1,6 @@
 digraph minimax
 {
+    ranksep=1.7;
     node [fontsize=18,font=consolas];
     Start [label="Current Board"];
     A [label="11", color=green];
@@ -9,7 +10,7 @@ digraph minimax
     E [label="8"];
     F [label="2"];
     G [label="10"];
-    Start -> A [color=green, headlabel="Maximizing player", labeldistance=10.5, labelangle=160];
+    Start -> A [color=green, headlabel="Maximizing player", labeldistance=10.2, labelangle=150];
     Start -> B;
     Start -> C;
     Start -> D;
@@ -23,7 +24,7 @@ digraph minimax
     A5 [label="12"];
     A6 [label="13"];
     A7 [label="11", color=green];
-    A -> A1 [headlabel="Minimizing player", labeldistance=10.5, labelangle=160];
+    A -> A1 [headlabel="Minimizing player", labeldistance=10.2, labelangle=150];
     A -> A2;
     A -> A3;
     A -> A4;
@@ -37,7 +38,7 @@ digraph minimax
     H5 [label="4"];
     H6 [label="2"];
     H7 [label="9"];
-    A7 -> H1 [headlabel="Maximizing player", labeldistance=10.5, labelangle=160];
+    A7 -> H1 [headlabel="Maximizing player", labeldistance=10.2, labelangle=150];
     A7 -> H2;
     A7 -> H3 [color=green];
     A7 -> H4;
